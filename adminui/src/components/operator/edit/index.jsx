@@ -8,14 +8,12 @@ const index = () => {
   const data = useGetOperators();
 
   const [open, setOpen] = useState(false);
-  const [item,setItem] = useState({})
+  const [item, setItem] = useState({});
 
-  const handleEdit = (item)=>{
-  
-    setItem(item)
-    setOpen(true)
- 
-  }
+  const handleEdit = (item) => {
+    setItem(item);
+    setOpen(true);
+  };
 
   return (
     <div className="bg-white mt-2 border border-gray-400/50 rounded-xl py-5 px-7">
@@ -23,7 +21,10 @@ const index = () => {
         <Heading text="operator details" />
         <div>
           {data.map((item) => (
-            <div className="grid grid-cols-4 w-[100%] gap-5   border-b border-gray-500/10 items-center" key={item._id}>
+            <div
+              className="grid grid-cols-4 w-[100%] gap-5   border-b border-gray-500/10 items-center"
+              key={item._id}
+            >
               <div className=" flex  items-center space-x-2 py-2">
                 <img
                   src={`http://localhost:3000/uploads/${item.image}`}
@@ -50,16 +51,11 @@ const index = () => {
               </button>
             </div>
           ))}
-
         </div>
-       
-
       </div>
 
-      {open && <Popup setOpen={setOpen}  item={item}/>}
+      {open && <Popup setOpen={setOpen} item={item} />}
     </div>
-
-
   );
 };
 

@@ -1,5 +1,35 @@
 const mongoose = require("mongoose");
 
+const seatsSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+
+  seat: {
+    type: String,
+    required: true,
+  },
+  booked: {
+    type: Boolean,
+    required: true,
+  },
+});
+
+const imageSchema = mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+});
+
+const amenitiesSchema = mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+});
+
 const busSchema = new mongoose.Schema({
   operatorid: {
     type: mongoose.Schema.Types.ObjectId,
@@ -10,7 +40,7 @@ const busSchema = new mongoose.Schema({
     required: true,
   },
   amenities: {
-    type: String,
+    type: [amenitiesSchema],
     required: true,
   },
   registration_number: {
@@ -18,15 +48,15 @@ const busSchema = new mongoose.Schema({
     required: true,
   },
   seatCount: {
-    type: Array,
+    type: [seatsSchema],
+
     required: true,
   },
   images: {
-    type: Array,
-    default: [],
+    type: [imageSchema],
   },
 });
 
-const busModel = mongoose.model("Bus", busSchema);
+const BusModel = mongoose.model("Bus", busSchema);
 
-module.exports = busModel;
+module.exports = BusModel;

@@ -44,7 +44,7 @@ router.put("/update/:id", upload.single("image"), async (req, res) => {
     }
 
     if (req.file) {
-      image = req.file.filename;
+      image =   req.file.filename;
     } else {
       image = user.image;
     }

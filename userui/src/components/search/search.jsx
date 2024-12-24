@@ -2,8 +2,17 @@ import React from "react";
 import Input from "../../widgets/input";
 import { useForm } from "react-hook-form";
 import Button from "../../widgets/button";
+import axios from "axios";
+import { useState } from "react";
+import Searchresult from "../searchresult";
+import Buslist from "../buseslist";
+import { Suspense } from "react";
+import Heading from "../../widgets/heading";
 
 const Search = () => {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   const { register, handleSubmit, reset } = useForm({
     defaultValues: {
       source: "",
@@ -13,9 +22,19 @@ const Search = () => {
     },
   });
 
-  const onSubmit = async(data)=>{
-    console.log(data)
-  }
+  const onSubmit = async (data) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/schedule/filterdata",
+        data
+      );
+      setData(response.data.data);
+      setLoading(true);
+      await console.log(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div>
@@ -48,6 +67,15 @@ const Search = () => {
           <Button text="Submit" />
         </button>
       </div>
+
+      {loading && data.length > 0 ? (
+        <Suspense>
+          <Heading maintext="Search" subtext="results"/>
+          <Buslist buses={data} />
+        </Suspense>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

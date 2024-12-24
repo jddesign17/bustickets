@@ -1,39 +1,21 @@
 import React from "react";
-import { useState } from "react";
-import { useEffect } from "react";
-import axios from "axios";
 import icon from "../../assets/icons.png";
 import seatimage from "../../assets/seat.png";
 
 import { useNavigate } from "react-router-dom";
 import { generatedate } from "../../../utils";
 
-const Buslist = () => {
-  const [buses, setBuses] = useState([]);
+const Buslist = ({buses}) => {
+ 
 
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  async function fetchData() {
-    try {
-      const response = await axios.get(
-        "http://localhost:3000/api/schedule/data"
-      );
-      console.log(response.data);
-      setBuses(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-
+  const navigate = useNavigate()
 
   function handleNavigate(item, id) {
     navigate(`/booking/${id}`,{state:item});
   }
+
+
+  console.log(buses)
 
   return (
     <div className=" mt-5 pb-20">
@@ -46,7 +28,7 @@ const Buslist = () => {
                 onClick={() => handleNavigate(item, item._id)}
               >
                 <img
-                  src={`http://localhost:3000/uploads/${item.bus_id.images?.[0]} `}
+                  src={`http://localhost:3000/uploads/${item.bus_id?.images[0]?.name} `}
                   className=" w-[350px] h-[300px] object-cover rounded-t-lg"
                 />
                 <div className=" mt-5 px-2">

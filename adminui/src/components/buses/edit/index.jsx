@@ -15,8 +15,9 @@ const index = () => {
     try {
       const respose = await axios.get("http://localhost:3000/api/buses/data");
       await setData(respose.data);
-      console.log(respose.data);
+      console.log(respose.data)
     } catch (error) {
+
       console.log(error);
     }
   }
@@ -31,7 +32,7 @@ const index = () => {
             <p>Type</p>
             <p>Seat count</p>
             <p>Operator</p>
-            <p>amenities</p>
+            {/* <p>amenities</p> */}
             <p>edit</p>
             <p>delete</p>
           </div>
@@ -45,7 +46,7 @@ const index = () => {
               >
                 <div className=" flex  items-center space-x-2 py-2">
                   <img
-                    src={`http://localhost:3000/uploads/${item.images[0]}`}
+                    src={`http://localhost:3000/uploads/${item.images[0]?.name}`}
                     className=" w-12 h-12 object-cover rounded-full"
                   />
                   <p className=" text-sm capitalize">
@@ -60,14 +61,14 @@ const index = () => {
                 </div>
                 <div className=" flex space-x-2 items-center">
                   <img
-                    src={` http://localhost:3000/uploads/${item.operatorid.image}`}
+                    src={` http://localhost:3000/uploads/${item.operatorid?.image}`}
                     className=" w-12 rounded-full object-cover aspect-square"
                   />
-                  <p className=" text-sm capitalize">{item.operatorid.name}</p>
+                  <p className=" text-sm capitalize">{item.operatorid?.name}</p>
                 </div>
-                <div>
+                {/* <div>
                   <p className=" text-sm">{item.amenities}</p>
-                </div>
+                </div> */}
                 <button
                   // onClick={() => handleEdit(item)}
                   className=" flex  items-center space-x-1 text-xs   hover:bg-green-300 cursor-pointer  rounded-full bg-green-400 w-fit px-7  py-2 text-white"

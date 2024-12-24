@@ -1,6 +1,5 @@
 import { lazy, Suspense } from "react";
 import { createBrowserRouter } from "react-router-dom";
-
 const Login = lazy(() => import("../pages/login/index"));
 const Operator = lazy(() => import("../pages/dashboard/subpages/operator"));
 const Dashboard = lazy(() => import("../pages/dashboard/index"));
@@ -13,9 +12,9 @@ const BusesEdit = lazy(() => import("../components/buses/edit/index"));
 const Routers = lazy(() => import("../pages/dashboard/subpages/routes"));
 const RouteAdd = lazy(() => import("../components/routers/add/index"));
 const RouteEdit = lazy(() => import("../components/routers/edit/index"));
-const ScheduleRoute = lazy(()=>import("../pages/dashboard/subpages/schedule"))
-const ScheduleAdd = lazy(()=>import("../components/schedule/add"))
-const ScheduleEdit = lazy(()=>import("../components/schedule/edit"))
+const ScheduleRoute = lazy(() =>import("../pages/dashboard/subpages/schedule"));
+const ScheduleAdd = lazy(() => import("../components/schedule/add"));
+const ScheduleEdit = lazy(() => import("../components/schedule/edit"));
 
 const withSuspense = (Component) => (
   <Suspense fallback={<Loading />}>
@@ -78,20 +77,19 @@ const router = createBrowserRouter([
       },
 
       {
-        path:"schedule",
-        element:withSuspense(ScheduleRoute),
-        children:[
+        path: "schedule",
+        element: withSuspense(ScheduleRoute),
+        children: [
           {
-            path:'add',
-            element:withSuspense(ScheduleAdd)
+            path: "add",
+            element: withSuspense(ScheduleAdd),
           },
           {
-            path:'edit',
-            element:withSuspense(ScheduleEdit)
-          }
-        ]
-
-      }
+            path: "edit",
+            element: withSuspense(ScheduleEdit),
+          },
+        ],
+      },
     ],
   },
 ]);

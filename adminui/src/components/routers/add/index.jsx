@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Heading from "../../../widgets/heading";
 import Input from "../../../widgets/input";
 import { useForm } from "react-hook-form";
@@ -6,8 +6,9 @@ import Button from "../../../widgets/button";
 import { addStops, createRoutes, getdata } from "../../../api/routes";
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
+
 const index = () => {
-  const { register, handleSubmit, reset } = useForm({
+  const { register, handleSubmit, reset ,formState:{errors}} = useForm({
     defaultValues: {
       source: "",
       destination: "",
@@ -16,9 +17,13 @@ const index = () => {
     },
   });
 
+  
+ 
   const [open, setOpen] = useState(false);
   const [data, setdata] = useState("");
   const [stops, setStops] = useState("");
+
+
   const onSubmit = async (data) => {
     console.log(data);
     const routedata = await createRoutes(data);
@@ -29,13 +34,19 @@ const index = () => {
   const handleStops = async (e) => {
     try {
       e.preventDefault();
-
       await addStops({ name: stops }, data._id);
       const userdata = await getdata(data._id);
       setdata(userdata);
       setStops("")
     } catch (error) {}
   };
+
+
+  const handleRefresh = async () => {
+    window.location.reload()
+    setOpen(false);
+  };
+
   return (
     <div className="bg-white mt-2 border border-gray-400/50 rounded-xl py-5 px-7">
       <Heading text="Adding Routes" />
@@ -45,25 +56,41 @@ const index = () => {
             placeholder="Enter source"
             type="text"
             label="source"
-            {...register("source")}
+            {...register("source",{required:true})}
+            errors={errors.source && <p>Source is required*</p>}
           />
+          
           <Input
             placeholder="Enter destination"
             type="text"
             label="destination"
-            {...register("destination")}
+            {...register("destination",{required:true})}
+            errors={errors.destination && <p>Destination is required*</p>}
           />
           <Input
             placeholder="Enter distance"
             type="number"
             label="distance"
-            {...register("distance")}
+            {...register("distance",{required:{
+              value:true,
+              message:"Distance is required*"
+            },maxLength:{
+              value:4,
+              message:"Max distance is 5"
+            }})}
+            errors={errors.distance && <p>{errors.distance.message}</p>}
           />
           <Input
             placeholder="Enter estimatedtime"
             type="time"
             label="estimatedtime"
-            {...register("estimatedtime")}
+            {...register("estimatedtime",{
+              required:{
+                value:true,
+                message:"Estimated time is required*"
+              }
+            })}
+            errors={errors.estimatedtime && <p>{errors.estimatedtime.message}</p>}
           />
         </div>
 
@@ -114,7 +141,7 @@ const index = () => {
               <></>
             )}
 
-            <div onClick={handleSubmit(onSubmit)}>
+            <div onClick={handleRefresh}>
               <Button text="Save" />
             </div>
           </div>

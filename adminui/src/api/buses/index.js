@@ -4,7 +4,12 @@ export const createBuses = async (fromData) => {
   try {
     const response = await axios.post(
       "http://localhost:3000/api/buses/create",
-      fromData
+      fromData,
+      {
+        headers:{
+          "Content-Type": "multipart/form-data"
+        }
+      }
     );
 
     console.log(response.data);

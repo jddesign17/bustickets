@@ -29,6 +29,14 @@ const Index = () => {
       }
     };
     fetchRouteData();
+
+    return()=>{
+      resetField("bus_id");
+      resetField("route_id");
+      resetField("departure_time");
+      resetField("fare");
+      resetField("date");
+    }
   }, []);
 
   const onSubmit = async (data) => {

@@ -50,11 +50,10 @@ router.get("/data", async (req, res) => {
   try {
     const response = await ScheduleModel.find()
       .populate({
-        path:"bus_id",
-        populate:{
-          path:"operatorid"
-        }
-
+        path: "bus_id",
+        populate: {
+          path: "operatorid",
+        },
       })
       .populate("route_id");
     res.send(response);
@@ -64,6 +63,7 @@ router.get("/data", async (req, res) => {
 });
 
 router.post("/filterdata", async (req, res) => {
+  console.log(req.body);
   const { source, destination, departure_time, date } = req.body;
 
   try {
@@ -73,33 +73,33 @@ router.post("/filterdata", async (req, res) => {
       departure_time: departure_time,
       date: date,
     })
-      .populate("route_id").populate({
-        path:"bus_id",
-        populate:{
-          path:"operatorid"
-        }
-      })
-      
-
-    console.log("Scheduler Response:", scheduleresponse);
+      .populate("route_id")
+      .populate({
+        path: "bus_id",
+        populate: {
+          path: "operatorid",
+        },
+      });
 
     const filteredResults = scheduleresponse.filter((schedule) => {
       return (
         schedule.route_id.source.toLowerCase() === source.toLowerCase() &&
-        schedule.route_id.destination.toLowerCase() === destination.toLowerCase()
+        schedule.route_id.destination.toLowerCase() ===
+          destination.toLowerCase()
       );
     });
 
     if (filteredResults.length > 0) {
       res.status(200).json({ success: true, data: filteredResults });
     } else {
-      res.status(404).json({ success: false, message: "No matching schedules found." });
+      res
+        .status(404)
+        .json({ success: false, message: "No matching schedules found." });
     }
   } catch (error) {
     console.error("Error:", error.message);
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 });
-
 
 module.exports = router;

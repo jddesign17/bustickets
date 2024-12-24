@@ -7,7 +7,12 @@ import { useForm } from "react-hook-form";
 import { createOperator } from "../../../api/operators";
 
 const Index = () => {
-  const { register, handleSubmit, reset } = useForm({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       name: "",
       contact: "",
@@ -39,19 +44,31 @@ const Index = () => {
             placeholder="Enter Operator Name"
             type="text"
             label="Operator Name"
-            {...register("name")}
+            {...register("name", { required: true})}
+            errors={errors.name && <p>Please check the Operator Name*</p>}
           />
+
           <Input
             placeholder="Enter Contact Number"
             type="number"
             label="Contact Number"
-            {...register("contact")}
+            {...register("contact", {
+              required: true,
+              pattern: {
+                value: /^[0-9]{10}$/,
+                
+              },
+            })}
+            errors={
+              errors.contact && <p>Contact number must be exactly 10 digits*</p>
+            }
           />
           <Input
             placeholder="Enter Operator Image"
             type="file"
             label="Operator Image"
-            {...register("image")}
+            {...register("image",{required: true})}
+            errors={errors.image && <p>Please check the Operator Image*</p>}
           />
         </div>
 

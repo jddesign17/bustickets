@@ -7,7 +7,6 @@ import { generatedate } from "../../../utils";
 import seatimage from "../../assets/seat.png";
 import icon from "../../assets/icons.png";
 import Button from "../../widgets/button";
-import { MdEventSeat } from "react-icons/md";
 import { useState } from "react";
 import Seatselection from "../../components/seatselection";
 const Booking = () => {
@@ -47,7 +46,11 @@ const Booking = () => {
     prevArrow: <PrevArrow />,
   };
 
-  console.log(busData.bus_id.operatorid?.image);
+ 
+
+  busData.bus_id.images.map((item)=>{
+    console.log(item.name)
+  })
 
   return (
     <div className="px-10">
@@ -59,7 +62,7 @@ const Booking = () => {
             {busData.bus_id.images.map((item, index) => (
               <img
                 key={index}
-                src={`http://localhost:3000/uploads/${item} `}
+                src={`http://localhost:3000/uploads/${item.name} `}
                 alt={`Slide ${index + 1}`}
                 className="h-[450px] object-cover w-full rounded-t-lg"
               />
@@ -73,8 +76,8 @@ const Booking = () => {
                 className=" w-16 h-16 object-cover rounded-full aspect-square"
               />
               <div>
-                <p className=" text-xl font-semibold">{busData.bus_id.operatorid.name}</p>
-                <p className=" text-white">+91 {' '}{busData.bus_id.operatorid.contact}</p>
+                <p className=" text-xl font-semibold">{busData.bus_id.operatorid?.name}</p>
+                <p className=" text-white">+91 {' '}{busData.bus_id.operatorid?.contact}</p>
               </div>
             </div>
           </div>
@@ -88,9 +91,15 @@ const Booking = () => {
               <p className=" bg-gray-400/30 w-fit px-8 text-sm  rounded-2xl mt-4 py-1 uppercase">
                 Bus type : {busData.bus_id.bustype}
               </p>
-              <p className=" bg-green-500 text-white w-fit px-8 text-sm  rounded-2xl mt-4 py-1 uppercase">
-                amenities : {busData.bus_id.amenities}
-              </p>
+              <div  className=" flex flex-row space-x-4">
+               {
+
+                busData.bus_id.amenities.map((item)=>(
+                  <p className=" bg-green-500 text-white w-fit px-8 text-sm  rounded-2xl mt-4 py-1 uppercase">amenities : {item.name}</p>
+                ))
+                   
+               }
+              </div>
             </div>
             <div className=" flex items-center space-x-2 mt-10">
               <p>{busData.route_id.source}</p>
