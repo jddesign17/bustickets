@@ -6,19 +6,19 @@ import { getBuses } from "../../../api/buses";
 import Input from "../../../widgets/input";
 import Button from "../../../widgets/button";
 import { createSchedule } from "../../../api/schedule";
+
 const Index = () => {
   const [routeData, setRouteData] = useState([]);
   const [busData, setBusData] = useState([]);
-  const { register, handleSubmit,resetField } = useForm({
-    bus_id: "",
-    route_id: "",
-    departure_time: "",
-    fare: 0,
-    date: null,
-  });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm();
 
   useEffect(() => {
-    const fetchRouteData = async () => {
+    const fetchData = async () => {
       try {
         const data = await routedata();
         setRouteData(data);
@@ -26,109 +26,98 @@ const Index = () => {
         setBusData(busdata);
       } catch (error) {
         console.error("Error fetching route data:", error);
+        setRouteData([]);
+        setBusData([]);
       }
     };
-    fetchRouteData();
+    fetchData();
 
-    return()=>{
-      resetField("bus_id");
-      resetField("route_id");
-      resetField("departure_time");
-      resetField("fare");
-      resetField("date");
-    }
+    return () => {
+      setRouteData([]);
+      setBusData([]);
+    };
   }, []);
 
   const onSubmit = async (data) => {
     try {
-      console.log(data)
-      createSchedule(data);
-      window.location.reload()
+      await createSchedule(data);
+      alert("Schedule created successfully!");
+      reset();
     } catch (error) {
-      console.log(error);
+      console.error("Error creating schedule:", error);
     }
   };
 
   return (
     <div className="bg-white mt-2 border border-gray-400/50 rounded-xl py-5 px-7">
       <Heading text="Add Schedule" />
-      <div className=" grid grid-cols-2 gap-5">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Select Routes
-          </label>
-          <select
-            {...register("route_id")}
-            className="border rounded px-3 py-3 mt-3 text-sm w-full capitalize"
-          >
-            <option value="" className="py-10" disabled selected>
-              select a Routes
-            </option>
-            {routeData.length > 0 ? (
-              routeData.map((operator) => (
-                <option
-                  key={operator._id}
-                  value={operator._id}
-                  className="py-10 capitalize"
-                >
-                  {operator.source} -to- {operator.destination} (
-                  {operator.distance}km)
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="grid grid-cols-2 gap-5">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Select Routes
+            </label>
+            <select
+              {...register("route_id", { required: "Please select a route" })}
+              className="border rounded px-3 py-3 mt-3 text-sm w-full capitalize"
+            >
+              <option value="" disabled>
+                Select a Route
+              </option>
+              {routeData.map((route) => (
+                <option key={route._id} value={route._id}>
+                  {route.source} - {route.destination} ({route.distance}km)
                 </option>
-              ))
-            ) : (
-              <option disabled>Loading...</option>
+              ))}
+            </select>
+            {errors.route_id && (
+              <p className="text-red-600 text-xs">{errors.route_id.message}</p>
             )}
-          </select>
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Select Routes
-          </label>
-          <select
-            {...register("bus_id")}
-            className="border rounded px-3 py-3 mt-3 text-sm w-full capitalize"
-          >
-            <option value="" className="py-10" disabled selected>
-              select a Routes
-            </option>
-            {busData.length > 0 ? (
-              busData.map((operator) => (
-                <option
-                  key={operator._id}
-                  value={operator._id}
-                  className="py-10 capitalize"
-                >
-                  Register Number - {operator.registration_number}
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Select Buses
+            </label>
+            <select
+              {...register("bus_id", { required: "Please select a bus" })}
+              className="border rounded px-3 py-3 mt-3 text-sm w-full capitalize"
+            >
+              <option value="" disabled>
+                Select a Bus
+              </option>
+              {busData.map((bus) => (
+                <option key={bus._id} value={bus._id}>
+                  Register Number - {bus.registration_number}
                 </option>
-              ))
-            ) : (
-              <option disabled>Loading...</option>
+              ))}
+            </select>
+            {errors.bus_id && (
+              <p className="text-red-600 text-xs">{errors.bus_id.message}</p>
             )}
-          </select>
+          </div>
+          <Input
+            label="Date"
+            type="date"
+            placeholder="Enter Date"
+            {...register("date", { required: "Please select a date" })}
+          />
+          <Input
+            label="Departure Time"
+            type="time"
+            placeholder="Enter Departure Time"
+            {...register("departure_time", {
+              required: "Please enter a departure time",
+            })}
+          />
+          <Input
+            label="Fare Amount"
+            type="number"
+            placeholder="Enter Fare Amount"
+            {...register("fare", { required: "Please enter a fare amount" })}
+          />
         </div>
-        <Input
-          placeholder="Enter date"
-          type="date"
-          label="Date"
-          {...register("date")}
-        />
-        <Input
-          placeholder="Enter Departure time"
-          type="time"
-          label="Departure time"
-          {...register("departure_time")}
-        />
-        <Input
-          placeholder="Enter Fare Amount"
-          type="number"
-          label="fare Amount"
-          {...register("fare")}
-        />
-      </div>
-
-      <button onClick={handleSubmit(onSubmit)} className=" w-full">
-        <Button text="submit" />
-      </button>
+        <Button text="Submit" />
+      </form>
     </div>
   );
 };

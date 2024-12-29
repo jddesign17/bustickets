@@ -3,8 +3,26 @@ import { MdChair } from "react-icons/md";
 import Button from "../../widgets/button";
 import { FaBed } from "react-icons/fa6";
 import { FaMattressPillow } from "react-icons/fa6";
-
+import {useNavigate} from "react-router-dom"
 const Seatselection = ({ seats }) => {
+
+  const navigate = useNavigate()
+
+  const handleBooking = async()=>{
+      try {
+
+        const token = await localStorage.getItem("token")
+        if(token === undefined || token === ""|| !token)
+        {
+          navigate("/signup")
+        }
+
+        
+      } catch (error) {
+        
+      }
+  }
+
   return (
     <div className="mb-20">
       <div className="grid grid-cols-10 justify-items-center py-7 bg-green-50">
@@ -37,7 +55,7 @@ const Seatselection = ({ seats }) => {
             return null; 
           })}
       </div>
-      <button className="w-full">
+      <button className="w-full" onClick={handleBooking}>
         <Button text="Book Now" />
       </button>
     </div>

@@ -5,7 +5,7 @@ import { IoIosCloseCircle } from "react-icons/io";
 import { useForm } from "react-hook-form";
 import { updateOperator } from "../../../api/operators";
 
-const Popup = ({ setOpen, item }) => {
+const OpeartorPopup = ({ setOpen, item }) => {
   const { register, reset, handleSubmit } = useForm({
     defaultValues: {
         name: item.name,
@@ -78,4 +78,4 @@ const Popup = ({ setOpen, item }) => {
   );
 };
 
-export default Popup;
+export default OpeartorPopup;

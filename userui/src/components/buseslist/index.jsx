@@ -15,8 +15,6 @@ const Buslist = ({buses}) => {
   }
 
 
-  console.log(buses)
-
   return (
     <div className=" mt-5 pb-20">
       {buses.length > 0 ? (

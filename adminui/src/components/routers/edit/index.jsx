@@ -1,14 +1,27 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import { routedata } from "../../../api/routes";
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
+import RoutePopup from "../../operator/popup/routes";
 
 const index = () => {
   const [data, setData] = React.useState([]);
+  
+    const [open, setOpen] = useState(false);
+    const [item, setItem] = useState({});
+  
+    const handleEdit = (item) => {
+      setItem(item);
+      setOpen(true);
+    };
 
   useEffect(async () => {
     const response = await routedata();
     setData(response);
+    
+    return () => {
+      setData([]);
+    }
   }, []);
 
   return (
@@ -22,7 +35,7 @@ const index = () => {
             <p>{item.estimatedtime}</p>
 
             <button
-              // onClick={() => handleEdit(item)}
+              onClick={() => handleEdit(item)}
               className=" flex  items-center space-x-1 text-xs   hover:bg-green-300 cursor-pointer  rounded-full bg-green-400 w-fit px-7  py-2 text-white"
             >
               <MdEdit />
@@ -37,7 +50,12 @@ const index = () => {
             </button>
           </div>
         ))}
+
+        {
+           open && <RoutePopup setOpen={setOpen} item={item}/>
+        }
     </div>
+
   );
 };
 

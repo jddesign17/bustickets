@@ -3,22 +3,19 @@ import Navbar from "../../components/navbar";
 import Hero from "../../components/hero";
 import Heading from "../../widgets/heading";
 import Search from "../../components/search/search";
-import Buslist from "../../components/buseslist/index"
+import Buslist from "../../components/buseslist/index";
 import { useState } from "react";
 import axios from "axios";
 import { useEffect } from "react";
 import { Suspense } from "react";
-import Loading from "../../components/loading"
+import Loading from "../../components/loading";
 
 const Home = () => {
-
   const [buses, setBuses] = useState([]);
-
-  
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [buses]);
 
   async function fetchData() {
     try {
@@ -32,7 +29,6 @@ const Home = () => {
     }
   }
 
-
   return (
     <div className=" bg-white px-10">
       <nav className=" sticky top-0 z-50 bg-white">
@@ -42,14 +38,12 @@ const Home = () => {
         <Hero />
       </section>
       <section>
-        <Heading  maintext="Search" subtext="Buses"/>
-        <Search/>
+        <Heading maintext="Search" subtext="Buses" />
+        <Search />
       </section>
       <section>
-        <Heading maintext="Avaliable" subtext="Buses"/>
-        <Suspense fallback={<Loading/>}>
-        <Buslist buses={buses}/>
-        </Suspense>
+        <Heading maintext="Avaliable" subtext="Buses" />
+        <Buslist buses={buses} />
       </section>
     </div>
   );

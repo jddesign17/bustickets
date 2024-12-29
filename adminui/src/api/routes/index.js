@@ -2,12 +2,10 @@ import axios from "axios";
 
 export const createRoutes = async (data) => {
   try {
-    console.log("data", data);
     const response = await axios.post(
       "http://localhost:3000/api/routes/create",
       data
     );
-    return response.data;
   } catch (error) {
     console.log(error);
   }
@@ -40,6 +38,19 @@ export const routedata = async () => {
   try {
     const response = await axios.get("http://localhost:3000/api/routes/data");
     return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+export const updateRoutedata = async (data, id) => {
+  try {
+    const response = await axios.put(
+      `http://localhost:3000/api/routes/update/${id}`,
+      data
+    );
+    console.log(response.data);
   } catch (error) {
     console.log(error);
   }

@@ -7,6 +7,7 @@ const operatorrouter = require("./router/operator");
 const busesrouter = require("./router/buses");
 const routesrouter = require("./router/routes");
 const schedulerouter = require("./router/schedule");
+const userrouter = require("./router/auth")
 dotenv.config();
 app.use("/uploads", express.static("uploads"));
 app.use(express.json());
@@ -17,6 +18,7 @@ app.use("/api/operator", operatorrouter);
 app.use("/api/buses", busesrouter);
 app.use("/api/routes", routesrouter);
 app.use("/api/schedule", schedulerouter);
+app.use("/api/auth",userrouter );
 
 const PORT = process.env.PORT;
 

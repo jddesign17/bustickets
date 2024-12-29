@@ -3,7 +3,7 @@ import { DeleteOperator, useGetOperators } from "../../../api/operators";
 import Heading from "../../../widgets/heading";
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
-import Popup from "../popup";
+import Popup from "../popup/index";
 const index = () => {
   const data = useGetOperators();
 

@@ -1,6 +1,5 @@
 import axios from "axios";
 export const createBuses = async (fromData) => {
-  console.log(fromData);
   try {
     const response = await axios.post(
       "http://localhost:3000/api/buses/create",
@@ -11,8 +10,6 @@ export const createBuses = async (fromData) => {
         }
       }
     );
-
-    console.log(response.data);
   } catch (error) {
     console.log(error);
   }
